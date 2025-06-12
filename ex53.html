@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #e8f0f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .timer-container {
+            text-align: center;
+            background: rgba(255,255,255,0.3);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .timer-title {
+            font-size: 2.5em;
+            color: #5a7a8a;
+            font-weight: bold;
+            letter-spacing: 3px;
+            margin-bottom: 30px;
+        }
+        .timer-display {
+            font-size: 3em;
+            color: #333;
+            font-weight: bold;
+            margin-bottom: 40px;
+            font-family: 'Courier New', monospace;
+        }
+        .timer-controls {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+        .timer-btn {
+            padding: 12px 25px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            min-width: 80px;
+        }
+        .start-btn {
+            background: #7fb069;
+            color: white;
+        }
+        .start-btn:hover {
+            background: #6a9c56;
+            transform: translateY(-2px);
+        }
+        .stop-btn {
+            background: #e74c3c;
+            color: white;
+        }
+        .stop-btn:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+        .reset-btn {
+            background: #a8d8a8;
+            color: #333;
+        }
+        .reset-btn:hover {
+            background: #95c595;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="timer-container">
+        <h1 class="timer-title">TIMER</h1>
+        <div class="timer-display" id="timerDisplay">25 : 00</div>
+        <div class="timer-controls">
+            <button class="timer-btn start-btn" onclick="startTimer()">START</button>
+            <button class="timer-btn stop-btn" onclick="stopTimer()">STOP</button>
+            <button class="timer-btn reset-btn" onclick="resetTimer()">RESET</button>
+        </div>
+    </div>
+
+    <script>
+        let timerInterval;
+        let minutes = 25;
+        let seconds = 0;
+        let isRunning = false;
+
+        function updateDisplay() {
+            const minutesStr = minutes.toString().padStart(2, '0');
+            const secondsStr = seconds.toString().padStart(2, '0');
+            document.getElementById('timerDisplay').textContent = `${minutesStr} : ${secondsStr}`;
+        }
+
+        function startTimer() {
+            if (!isRunning) {
+                isRunning = true;
+                timerInterval = setInterval(() => {
+                    if (seconds > 0) {
+                        seconds--;
+                    } else if (minutes > 0) {
+                        minutes--;
+                        seconds = 59;
+                    } else {
+                        stopTimer();
+                        alert('Timer finished!');
+                        return;
+                    }
+                    updateDisplay();
+                }, 1000);
+            }
+        }
+
+        function stopTimer() {
+            if (isRunning) {
+                clearInterval(timerInterval);
+                isRunning = false;
+            }
+        }
+
+        function resetTimer() {
+            stopTimer();
+            minutes = 25;
+            seconds = 0;
+            updateDisplay();
+        }
+
+        updateDisplay();
+    </script>
+</body>
+</html>
